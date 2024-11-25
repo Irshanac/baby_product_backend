@@ -15,11 +15,21 @@ export const registaerUser=asyncErrorResolver(async(req,res)=>{
     const token = generateToken(newUser._id);
         res.json({status: "success", message: "User registered successfully",token});
     });
-// export const loginUser=asyncErrorResolver(async(req,res)=>{
-//     const {email,password}=req.body;
-//     const userData=await user.findOne({email})
-//     if(!userData)
-//     {
-//         return res.status(400)
-//     }
-// })
+export const loginUser=asyncErrorResolver(async(req,res)=>{
+    const {email,password}=req.body;
+    const userData=await user.findOne({email})
+    if(!userData)
+    {
+        return res.status(400).json({message:"please create a account"})
+    }
+    else{
+        const isMatch = await bcrypt.compare(password, userData.password);
+        
+        if (isMatch) {
+            return res.send(`Please welcome, ${userData.name}`);
+        }
+        else{
+            return res.status(400).json({ message: "Please enter the correct password." });
+        }
+    }
+})
