@@ -11,3 +11,7 @@ export const addProductionServices = async ({ name, ...rest }) => {
   
     return newProduct;
   };
+export const getProductServices=async()=>{
+  const allData=await product.find()
+  return allData
+}

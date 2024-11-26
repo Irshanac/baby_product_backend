@@ -1,5 +1,5 @@
 import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
-import { addProductionServices } from "../service/productService.js";
+import { addProductionServices ,getProductServices} from "../service/productService.js";
 //add product
 export const addProduct = asyncErrorResolver(async (req, res) => {
   const { name, ...rest } = req.body;
@@ -14,4 +14,11 @@ export const addProduct = asyncErrorResolver(async (req, res) => {
 
 
 //get all product
-// export const getProduct=asyncErrorResolver(async())
+export const getProduct=asyncErrorResolver(async(req,res)=>{
+  const data=await getProductServices()
+    res.status(201).json({
+      success:true,
+      message:"get all product",
+      data
+    })
+})
