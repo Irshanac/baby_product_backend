@@ -4,7 +4,7 @@ import CustomError from "../utils/customError.js";
 
 //add to cart
 export const AddCartServices=async(productId,userid)=>{
-    console.log("in service page...")
+    
     //find the product
     const existingItem=await product.findById(productId)
     console.log("existing product.....",existingItem)
@@ -18,8 +18,13 @@ export const AddCartServices=async(productId,userid)=>{
     }
     const existingIndex=cart.products.findIndex((item) => item.product.toString() === productId)
     let message;
+    
     if(existingIndex > -1)
     {
+        const currentQuantity = cart.products[existingIndex].quantity;
+        if (currentQuantity + 1 > existingItem.quantity) {
+            return "You cannot add the product to the cart. Insufficient stock.";
+        }
         cart.products[existingIndex].quantity+=1
         message = "Product already exists in the cart, quantity increased.";
     }   
