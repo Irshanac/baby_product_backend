@@ -9,7 +9,7 @@ export const addFavouriteSerivices=async(userId,productId)=>{
     if(!userFavourite)
     {
         userFavourite=new Favourite({user:userId,favourite:[]})
-    }
+    } 
     const existingFav=userFavourite.favourite.find((item)=>item.toString()===productId)
     if (existingFav) {
         return "Item already exists in favourites.";
@@ -27,4 +27,12 @@ export const removeFavouriteServices=async(userId,productId)=>{
     const updateFavorite=existingFavorite.favourite.filter((product)=>product!==productId)
     existingFavorite.favourite=updateFavorite
     existingFavorite.save()
+}
+export const getFavouriteServices=async(userId)=>{
+    const userFav=await Favourite.findOne({user:userId})
+    const fav=userFav.favourite
+    if(!fav)
+        return { empty: true, cart: null };
+    return { empty: false, fav }
+
 }
