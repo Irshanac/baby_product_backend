@@ -54,5 +54,4 @@ export const deleteCartService=async(userId,productId)=>{
     );
     userCart.products = updatedProducts;
     await userCart.save();
-   // return "Product removed from the cart successfully.";
 }
