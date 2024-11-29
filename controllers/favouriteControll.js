@@ -8,8 +8,8 @@ export const addToFavourites=asyncErrorResolver(async(req,res)=>{
 })
 export const removeSingleFavourite=asyncErrorResolver(async(req,res)=>{
     const userId=req.user._id
-    const {productId}=req.body
-    await removeFavouriteServices(userId,productId)
+    const {id}=req.params
+    await removeFavouriteServices(userId,id)
     res.json({status:"success",message:"remove favourite"})
 })
 export const getAllFavorite=asyncErrorResolver(async(req,res)=>{

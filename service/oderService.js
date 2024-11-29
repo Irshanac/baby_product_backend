@@ -50,10 +50,10 @@ export const addOrderServices = async (
   return "Your order is complete.";
 };
 export const showOrderServices = async (userId) => {
-  const orders = await Order.find({ user: userId }).populate(
-    "items.productId",
-    "name price"
-  );
+  const orders = await Order.find({ user: userId }).populate({
+    path: 'items.productId', 
+    model: 'product',
+  });
   if (!orders) {
     return { orders: [], message: "No orders found for this user." };
   }

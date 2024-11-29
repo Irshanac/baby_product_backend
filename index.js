@@ -20,7 +20,5 @@ app.use('/cart',cartRoutes)
 app.use('/favourite',favouriteRouter)
 app.use('/order',orderRouter)
 
-const PORT = process.env.PORT || 4500;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+const PORT = process.env.PORT 
+app.listen(PORT);

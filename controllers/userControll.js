@@ -26,7 +26,7 @@ export const loginUser = asyncErrorResolver(async (req, res) => {
   const { email, password } = req.body;
   const userData = await user.findOne({ email });
   if (!userData) {
-    throw new CustomError("Please create an account", 400);
+    throw new CustomError("Please create an account,Email is invalid", 400);
   }
   const isMatch = await bcrypt.compare(password, userData.password);
   if (!isMatch) {
@@ -36,7 +36,8 @@ export const loginUser = asyncErrorResolver(async (req, res) => {
     throw new CustomError("Your account is blocked. Contact support.", 403);
   }
   const token = generateToken(userData._id);
-
+  console.log("Token",token);
+  
   res.status(200).json({
     status: "success",
     message: userData.isAdmin ? "Admin Login successful" : "Login successful",

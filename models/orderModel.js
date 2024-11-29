@@ -3,7 +3,7 @@ const orderSchema = mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "user", required: true },
     items: [
         {
-            productId: { type: mongoose.Schema.Types.ObjectId, ref: "product", required: true },
+            productId: { type: mongoose.Schema.Types.ObjectId, ref: "Cart", required: true },
             quantity: { type: Number, required: true } 
         }
     ],
