@@ -1,5 +1,6 @@
 import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
-import { addProductionServices ,getProductServices} from "../service/productService.js";
+import { addProductionServices ,getProductServices,deleteProductServices,editProductServices} from "../service/productService.js";
+import CustomError from "../utils/customError.js";
 //add product
 export const addProduct = asyncErrorResolver(async (req, res) => {
   const { name, ...rest } = req.body;
@@ -21,4 +22,26 @@ export const getProduct=asyncErrorResolver(async(req,res)=>{
       message:"get all product",
       data
     })
+})
+
+//delete product
+export const deleteProduct=asyncErrorResolver(async(req,res)=>{
+  const {id}=req.params
+  const message= await deleteProductServices(id)
+  res.json({status:"success",message})
+})
+
+//edit product
+export const editProduct=asyncErrorResolver(async(req,res)=>{
+  const { _id, ...updateProduct } = req.body;
+  if (!_id) {
+      throw new CustomError("product is not found",400)
+  }
+  const updatedProduct = await editProductServices(_id, updateProduct);
+  res.status(200).json({
+      status: 'success',
+      message: 'Product updated successfully',
+      data: updatedProduct,
+  });
+
 })
