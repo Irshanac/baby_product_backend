@@ -2,9 +2,9 @@ import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
 import { AddCartServices ,getCartServices,deleteCartService} from "../service/cartService.js";
 //add to cart
 export const addToCart = asyncErrorResolver(async (req, res) => {
-    const { productId } = req.body;
+    const { id } = req.params;
     const userId = req.user._id; 
-   const message= await AddCartServices(productId, userId);
+   const message= await AddCartServices(id, userId);
     res.json({ status: "success", message});
 });
 
@@ -27,7 +27,8 @@ export const getCart=asyncErrorResolver(async(req,res)=>{
 
 //delete item in cart
 export const deleteCart=asyncErrorResolver(async(req,res)=>{
-    const {userId,cartId}=req.user._id
-    await deleteCartService(userId,cartId)
+    const {id}=req.params
+    const userId = req.user._id;
+    await deleteCartService(userId,id)
     res.json({status:"success",message:"delete cart success"})
 })

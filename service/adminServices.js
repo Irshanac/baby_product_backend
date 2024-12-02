@@ -39,15 +39,12 @@ export const getTotalServices=async()=>{
     const orderData=await Order.find()
     if(!orderData)
         return 0
-        // CustomError("no order list",400)
     const total=orderData.reduce((acc,cur)=>acc+cur.total,0)
     return total
 
 }
 export const userCountServices=async()=>{
     const userlists= await getAllUserServices()
-    // console.log("users",userli);
-    
     // console.log("user count",userlist.length)
     if(!userlists)
             return ({messege:"no user" ,count:0})

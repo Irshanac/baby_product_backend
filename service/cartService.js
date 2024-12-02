@@ -8,6 +8,7 @@ export const AddCartServices=async(productId,userid)=>{
     //find the product
     const existingItem=await product.findById(productId)
     // console.log("existing product.....",existingItem)
+    console.log(existingItem,"existing.....")
     if(!existingItem)
         throw CustomError("product is not present",401)
    
@@ -45,7 +46,7 @@ export const getCartServices=async(userId)=>{
     return { empty: false, cart }
 }
 export const deleteCartService=async(userId,productId)=>{
-    const userCart=Cart.findOne({user:userId})
+    const userCart=await Cart.findOne({user:userId})
     if (!userCart) {
         throw new CustomError("Cart not found for the user.",401);
     }
