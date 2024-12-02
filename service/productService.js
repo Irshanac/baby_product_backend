@@ -33,6 +33,24 @@ export const editProductServices=async(id,updateProduct)=>{
   {
     throw new CustomError("product is unavailable",400)
   }
-  const data =await product.findByIdAndUpdate(id,{ $set: updateProduct })
+  const data = await product.findByIdAndUpdate(id, { $set: updateProduct }, { new: true });
   return data
+}
+export const singleProductServices=async(id)=>
+{
+const existingProduct=await product.findById(id)
+  if(!existingProduct)
+    throw new CustomError("product is unavailable",400)
+  return existingProduct
+}
+export const productByCategoryService=async(category)=>{
+  if (!category) {
+   throw CustomError("Category is required.", 400)
+}
+const products = await product.find({ category: new RegExp(`^${category}$`, "i") });
+if (!products || products.length === 0) {
+    return { message: `No products found in category`, products: [] };
+}
+
+return { message: `Products.....`, products };
 }

@@ -6,6 +6,7 @@ import cartRoutes from './routes/cartRoute.js'
 import productRouters from './routes/productRoute.js';
 import favouriteRouter from './routes/favouriteRoute.js'
 import orderRouter from './routes/orderRouter.js'
+import adminRouter from './routes/adminRouter.js'
 import cors from 'cors';  
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use('/', productRouters);
 app.use('/cart',cartRoutes)
 app.use('/favourite',favouriteRouter)
 app.use('/order',orderRouter)
+app.use('/api/admin',adminRouter)
 
 const PORT = process.env.PORT 
 app.listen(PORT);

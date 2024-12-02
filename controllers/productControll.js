@@ -1,5 +1,5 @@
 import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
-import { addProductionServices ,getProductServices,deleteProductServices,editProductServices} from "../service/productService.js";
+import { addProductionServices ,getProductServices,deleteProductServices,editProductServices,singleProductServices,productByCategoryService} from "../service/productService.js";
 import CustomError from "../utils/customError.js";
 //add product
 export const addProduct = asyncErrorResolver(async (req, res) => {
@@ -44,4 +44,19 @@ export const editProduct=asyncErrorResolver(async(req,res)=>{
       data: updatedProduct,
   });
 
+})
+
+export const singleProduct =asyncErrorResolver(async(req,res)=>{
+  const {id}=req.params
+  const product=await singleProductServices(id)
+  res.status(200).json({
+    status:"success",
+    product
+  })
+})
+
+export const productByCategory=asyncErrorResolver(async(req,res)=>{
+  const { category } = req.query;
+  const {message,products}=await productByCategoryService(category)
+  res.status(200).json({status:"success",message,products})
 })
