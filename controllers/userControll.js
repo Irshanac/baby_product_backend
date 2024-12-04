@@ -36,7 +36,7 @@ export const loginUser = asyncErrorResolver(async (req, res) => {
     throw new CustomError("Your account is blocked. Contact support.", 403);
   }
   const token = generateToken(userData._id);
-  console.log("Token",token);
+  // console.log("Token",token);
   
   res.status(200).json({
     status: "success",

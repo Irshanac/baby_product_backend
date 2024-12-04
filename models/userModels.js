@@ -7,5 +7,5 @@ const userModel=new mongoose.Schema({
     isAdmin:{type:Boolean,required:true,default:false},
     isBlock:{type:Boolean,required:true,default:false}
 })
-const user=mongoose.model('user',userModel)
+const   user=mongoose.model('user',userModel)
 export default user
