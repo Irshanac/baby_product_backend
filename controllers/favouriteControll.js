@@ -12,18 +12,15 @@ export const removeSingleFavourite=asyncErrorResolver(async(req,res)=>{
     await removeFavouriteServices(userId,id)
     res.json({status:"success",message:"remove favourite"})
 })
+
+//get all favorite
 export const getAllFavorite=asyncErrorResolver(async(req,res)=>{
     const userId=req.user._id
-    const { empty, fav } = await getFavouriteServices(userId);
-    if (empty) {
-        return res.status(200).json({
-            status: "success",
-            message: "Your favourite is empty.",
-        });
+    const userFavourite  = await getFavouriteServices(userId);
+    if (!userFavourite || userFavourite.favourite.length === 0) {
+        res.status(200).json({status:"success",message:"empty"})
     }
-
-    res.status(200).json({
-        status: "success",
-        fav
-    });
+    else
+        res.status(200).json({status:"success",favourite:userFavourite.favourite})
+    
 })

@@ -38,8 +38,5 @@ export const removeFavouriteServices = async (userId, productId) => {
 
 export const getFavouriteServices = async (userId) => {
     const userFavourite = await Favourite.findOne({ user: userId }).populate("favourite");
-    if (!userFavourite || userFavourite.favourite.length === 0) {
-        return { empty: true, fav: [] };
-    }
-    return { empty: false, fav: userFavourite.favourite };
+    return userFavourite
 };

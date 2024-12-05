@@ -12,8 +12,8 @@ export const userBlockService = async (id) => {
     if(userDetails.isBlock)
       userDetails.isBlock=false
     else
-    userDetails.isBlock=true
-      userDetails.save()
+      userDetails.isBlock=true
+    userDetails.save()
     return userDetails
   }
 };

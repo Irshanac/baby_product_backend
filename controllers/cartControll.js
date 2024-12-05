@@ -11,18 +11,25 @@ export const addToCart = asyncErrorResolver(async (req, res) => {
 //get all item in cart
 export const getCart=asyncErrorResolver(async(req,res)=>{
     const userId=req.user._id
-    const { empty, cart } = await getCartServices(userId);
-    if (empty) {
-        return res.status(200).json({
-            status: "success",
-            message: "Your cart is empty.",
-        });
-    }
+    const cart = await getCartServices(userId);
+    if(!cart)
+        res.status(200).json({status:"success",message:"Your cart is empty"})
+    else 
+        res.status(200).json({status:"success",cart})
+    // // if(!cart)
+    // //     return { empty: true, cart: null };
+    // // return { empty: false, cart }
+    // if (empty) {
+    //     return res.status(200).json({
+    //         status: "success",
+    //         message: "Your cart is empty.",
+    //     });
+    // }
 
-    res.status(200).json({
-        status: "success",
-        cart
-    });
+    // res.status(200).json({
+    //     status: "success",
+    //     cart
+    // });
 })
 
 //delete item in cart

@@ -5,10 +5,8 @@ export const addProductionServices = async ({ name, ...rest }) => {
     if (existingItem) {
       throw new CustomError("Product already exists.", 400);
     }
-  
     const newProduct = new product({ name, ...rest });
     await newProduct.save();
-  
     return newProduct;
   };
 export const getProductServices=async()=>{

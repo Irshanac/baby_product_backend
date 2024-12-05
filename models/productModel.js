@@ -6,6 +6,7 @@ const ProductSchema = new mongoose.Schema({
   description: { type: String, require: true },
   category: { type: String, require: true },
   url: { type: String, require: true },
+  isDelete:{type:Boolean,required:true,default:false}
 });
 const product=mongoose.model('product',ProductSchema)
 export default product

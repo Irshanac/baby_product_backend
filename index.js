@@ -8,11 +8,12 @@ import favouriteRouter from './routes/favouriteRoute.js'
 import orderRouter from './routes/orderRouter.js'
 import adminRouter from './routes/adminRouter.js'
 import cors from 'cors';  
-
+import errorHandler from './middlewares/errorHandler.js';
 dotenv.config();
 const app = express();
 app.use(cors());  
 app.use(express.json());
+
 connectionDB();
 
 app.use('/user', userRoutes); 
@@ -21,6 +22,7 @@ app.use('/cart',cartRoutes)
 app.use('/favourite',favouriteRouter)
 app.use('/order',orderRouter)
 app.use('/api/admin',adminRouter)
+app.use(errorHandler);
 
 const PORT = process.env.PORT 
 app.listen(PORT);
