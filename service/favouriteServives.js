@@ -2,8 +2,7 @@ import Favourite from "../models/favoriteModel.js";
 import Product from "../models/productModel.js";
 import CustomError from "../utils/customError.js";
 
-export const addFavouriteSerivices = async (userId, productId) => {
-    
+export const addFavouriteSerivices = async (userId, productId) => {  
     const existingProduct = await Product.findById(productId);
     if (!existingProduct) {
         throw new CustomError("Product is not available.", 404);
@@ -16,25 +15,26 @@ export const addFavouriteSerivices = async (userId, productId) => {
         (item) => item.toString() === productId
     );
     if (existingFav) {
-        return "Item already exists in favourites.";
+        throw new CustomError ("Item already exists in favourites",400)
     }
     userFavourite.favourite.push(productId);
     await userFavourite.save();
-
-    return "Product added to favourites successfully.";
 };
+
 
 export const removeFavouriteServices = async (userId, productId) => {
-    const userFavourite = await Favourite.findOne({ user: userId });
-    if (!userFavourite) {
-        throw new CustomError("No favourites found for the user.", 404);
-    }
-    userFavourite.favourite = userFavourite.favourite.filter(
-        (item) => item.toString() !== productId
-    );
-    await userFavourite.save();
-    return "Product removed from favourites successfully.";
+  const updateResult = await Favourite.updateOne(
+    { user: userId },
+    { $pull: { favourite: productId } } 
+  );
+  if (updateResult.matchedCount === 0) {
+    throw new CustomError("No favourites found for the user.", 404);
+  }
+  if (updateResult.modifiedCount === 0) {
+    throw new CustomError("Product not found in user's favourites.", 404);
+  }
 };
+
 
 export const getFavouriteServices = async (userId) => {
     const userFavourite = await Favourite.findOne({ user: userId }).populate("favourite");

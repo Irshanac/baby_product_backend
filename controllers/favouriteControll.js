@@ -1,16 +1,22 @@
 import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
 import {addFavouriteSerivices,removeFavouriteServices,getFavouriteServices} from '../service/favouriteServives.js'
+
+//add to favorite
 export const addToFavourites=asyncErrorResolver(async(req,res)=>{
     const userId=req.user._id
     const {id}=req.params
-    const message=await addFavouriteSerivices(userId,id)
-    res.json({status:"success",message})
+    const favoriteProduct=await addFavouriteSerivices(userId,id)
+    if(favoriteProduct)
+        res.status("success").json("success")
 })
+
+
+//delete a single favorite
 export const removeSingleFavourite=asyncErrorResolver(async(req,res)=>{
     const userId=req.user._id
     const {id}=req.params
     await removeFavouriteServices(userId,id)
-    res.json({status:"success",message:"remove favourite"})
+    res.json({status:"success",message:"Product removed from favourites successfully."})
 })
 
 //get all favorite

@@ -40,17 +40,25 @@ export const addOrderServices = async (
   await order.save();
   cart.products = [];
   await cart.save();
-
-  return "Your order is complete.";
 };
 
-export const showOrderServices = async (userId) => {
-  const orders = await Order.find({ user: userId }).populate({
-    path: 'items.productId', 
-    model: 'product',
-  });
-  if (!orders) {
-    return { orders: [], message: "No orders found for this user." };
-  }
-  return { message: "Order list retrieved successfully.", orders };
+export const showOrderServices = async (userId, page = 1, limit = 10) => {
+  const skip = (page - 1) * limit; 
+  const total = await Order.countDocuments({ user: userId });
+  const orders = await Order.find({ user: userId })
+    .populate({ path: 'items.productId', model: 'product' })
+    .skip(skip)
+    .limit(limit);
+
+  return {
+    message: orders.length ? "Orders retrieved successfully" : "No orders found",
+    orders,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
+

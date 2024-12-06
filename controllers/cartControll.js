@@ -4,8 +4,8 @@ import { AddCartServices ,getCartServices,deleteCartService} from "../service/ca
 export const addToCart = asyncErrorResolver(async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id; 
-   const message= await AddCartServices(id, userId);
-    res.json({ status: "success", message});
+    await AddCartServices(id, userId);
+    res.json({ status: "success", message:"add product success"});
 });
 
 //get all item in cart

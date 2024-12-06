@@ -20,15 +20,14 @@ export const AddCartServices=async(productId,userid)=>{
     {
         const currentQuantity = cart.products[existingIndex].quantity;
         if (currentQuantity + 1 > existingItem.quantity) {
-            return "You cannot add the product to the cart. Insufficient stock.";
+            throw new CustomError( "You cannot add the product to the cart. Insufficient stock.",400)
         }
         cart.products[existingIndex].quantity+=1
-        message = "Product already exists in the cart, quantity increased.";
+       throw new CustomError( "Product already exists in the cart, quantity increased.",400)
     }   
     else
     {
         cart.products.push({product:productId,quantity:1})
-        message = "Product added to the cart successfully.";
     }
     await cart.save()
     return message
@@ -45,5 +44,4 @@ export const deleteCartService = async (userId, productId) => {
     if (result.modifiedCount === 0) {
         throw new CustomError("Cart not found for the user or product not in cart.", 401);
     }
-    console.log(result)
 };
