@@ -1,4 +1,5 @@
 import asyncErrorResolver from "../middlewares/asyncErrorResolver.js";
+import { STATUS } from "../utils/constants.js";
 import { addProductionServices ,productService,deleteProductServices,editProductServices,singleProductServices} from "../service/productService.js";
 import CustomError from "../utils/customError.js";
 //add product
@@ -7,7 +8,7 @@ export const addProduct = asyncErrorResolver(async (req, res) => {
 
   const data = await addProductionServices({ name, ...rest });
   res.status(201).json({
-    success: true,
+    success: STATUS.SUCCESS,
     message: "Product added successfully.",
     data,
   });
@@ -18,7 +19,7 @@ export const addProduct = asyncErrorResolver(async (req, res) => {
 export const deleteProduct=asyncErrorResolver(async(req,res)=>{
   const {id}=req.params
   await deleteProductServices(id)
-  res.json({status:"success",message:"Product deleted successfully"})
+  res.json({status:STATUS.SUCCESS,message:"Product deleted successfully"})
  
 })
 
@@ -30,7 +31,7 @@ export const editProduct=asyncErrorResolver(async(req,res)=>{
   }
   const updatedProduct = await editProductServices(_id, updateProduct);
   res.status(200).json({
-      status: 'success',
+      status: STATUS.SUCCESS,
       message: 'Product updated successfully',
       data: updatedProduct,
   });
@@ -43,7 +44,7 @@ export const singleProduct =asyncErrorResolver(async(req,res)=>{
   const {id}=req.params
   const product=await singleProductServices(id)
   res.status(200).json({
-    status:"success",
+    status:STATUS.SUCCESS,
     product
   })
 })
@@ -58,10 +59,11 @@ export const getProducts=asyncErrorResolver(async(req,res)=>{
     search,
   });
   if(products.length===0)
-    res.status(200).json({status:"success",message:"No products found"})
+    res.status(200).json({status:STATUS.SUCCESS,message:"No products found"})
   else
     res.status(200).json({
-    status: "success",
-    products
+    status: STATUS.SUCCESS,
+    products,
+    pagination
   });
 })

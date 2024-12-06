@@ -14,7 +14,6 @@ export const AddCartServices=async(productId,userid)=>{
         cart = new Cart({ user: userid, products: [] });
     }
     const existingIndex=cart.products.findIndex((item) => item.product.toString() === productId)
-    let message;
     
     if(existingIndex > -1)
     {
@@ -30,7 +29,6 @@ export const AddCartServices=async(productId,userid)=>{
         cart.products.push({product:productId,quantity:1})
     }
     await cart.save()
-    return message
 }
 export const getCartServices=async(userId)=>{
     const cart = await Cart.findOne({ user: userId }).populate("products.product");

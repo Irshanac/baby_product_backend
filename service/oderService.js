@@ -51,7 +51,6 @@ export const showOrderServices = async (userId, page = 1, limit = 10) => {
     .limit(limit);
 
   return {
-    message: orders.length ? "Orders retrieved successfully" : "No orders found",
     orders,
     pagination: {
       total,
