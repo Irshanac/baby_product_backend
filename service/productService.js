@@ -19,8 +19,8 @@ export const deleteProductServices=async(productId)=>{
   if (!existingProduct) {
     throw new CustomError("Product is unavailable", 400);
   }
-  return deleteData = await product.findByIdAndUpdate(
-    productId,  { isDeleted: true },{ new: true } 
+ return await product.findByIdAndUpdate(
+    productId,  { isDelete: true },{ new: true } 
   );
 };
 
@@ -69,18 +69,18 @@ const existingProduct=await product.findById(id)
 //get product
 
 export const productService = async ({ category, page = 1, limit = 10, search }) => {
-  const query = { isDeleted: { $eq: false } }; 
+  const query = { isDelete: false }; 
 
-  //based on category
+  // Add category
   if (category) {
-    query.category = new RegExp(`^${category}$`, "i");
+    query.category = { $regex: `^${category}$`, $options: "i" };
   }
 
- //based on search 
+  // Add search
   if (search) {
     query.$or = [
-      { name: new RegExp(search, "i") },       
-      { description: new RegExp(search, "i") } 
+      { name: { $regex: search, $options: "i" } },
+      { category: { $regex: search, $options: "i" } },
     ];
   }
 
@@ -89,14 +89,7 @@ export const productService = async ({ category, page = 1, limit = 10, search })
   const total = await product.countDocuments(query);
   const products = await product.find(query).skip(skip).limit(limit);
 
-  // return products
-
-  if (!products || products.length === 0) {
-    return { message: "No products found", products: [] };
-  }
-
   return {
-    message: "Products retrieved successfully",
     products,
     pagination: {
       total,

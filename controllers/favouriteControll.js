@@ -7,7 +7,7 @@ export const addToFavourites=asyncErrorResolver(async(req,res)=>{
     const {id}=req.params
     const favoriteProduct=await addFavouriteSerivices(userId,id)
     if(favoriteProduct)
-        res.status("success").json("success")
+        res.status(200).json({status:"success",message:"add to favourite"})
 })
 
 

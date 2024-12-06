@@ -17,12 +17,9 @@ export const addProduct = asyncErrorResolver(async (req, res) => {
 //delete product
 export const deleteProduct=asyncErrorResolver(async(req,res)=>{
   const {id}=req.params
-  const deleteData= await deleteProductServices(id)
-  if (deleteData) {
-    res.json({status:"success",message:"Product deleted successfully"})
-  }
-
-  throw new CustomError("Error occurred while deleting the product.", 500);
+  await deleteProductServices(id)
+  res.json({status:"success",message:"Product deleted successfully"})
+ 
 })
 
 //edit product
@@ -51,24 +48,20 @@ export const singleProduct =asyncErrorResolver(async(req,res)=>{
   })
 })
 
-// export const productByCategory=asyncErrorResolver(async(req,res)=>{
-//   const { category } = req.query;
-//   const {message,products}=await productByCategoryService(category)
-//   res.status(200).json({status:"success",message,products})
-// })
-
-
 //get product
 export const getProducts=asyncErrorResolver(async(req,res)=>{
   const {category,page,search}=req.query
-  const result = await productService({
+  const {products,pagination} = await productService({
     category,
     page: parseInt(page, 10) || 1,
     limit: 10,
     search,
   });
-  res.status(200).json({
+  if(products.length===0)
+    res.status(200).json({status:"success",message:"No products found"})
+  else
+    res.status(200).json({
     status: "success",
-    ...result,
+    products
   });
 })
