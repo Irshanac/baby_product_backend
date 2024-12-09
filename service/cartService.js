@@ -22,7 +22,7 @@ export const AddCartServices=async(productId,userid)=>{
             throw new CustomError( "You cannot add the product to the cart. Insufficient stock.",400)
         }
         cart.products[existingIndex].quantity+=1
-       throw new CustomError( "Product already exists in the cart, quantity increased.",400)
+       throw new CustomError( "Product already exists in the cart, ",400)//quantity increased.
     }   
     else
     {

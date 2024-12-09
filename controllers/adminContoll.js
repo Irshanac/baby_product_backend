@@ -14,12 +14,34 @@ export const userBlock=asyncErrorResolver(async(req,res)=>{
 
 
 //ALL USERS
-export const allUser=asyncErrorResolver(async(req,res)=>{
-    const usersList=await getAllUserServices()
-    const message=usersList.length? "user list ":"user is empty"
-    res.json({status:STATUS.SUCCESS,message,user:usersList})     
-})
+export const allUser = asyncErrorResolver(async (req, res) => {
+    const { page} = req.query; 
+    const pageInt = parseInt(page, 10)|| 1
+    const limit=10
+    const skip = (pageInt - 1) * limit;
+    const { usersList, totalUsers } = await getAllUserServices(limit, skip);
+  
+    const message = usersList.length ? "User list" : "No users found";
+    const totalPages = Math.ceil(totalUsers / limit);
+  
+    res.json({
+      status: STATUS.SUCCESS,
+      message,
+      data: {
+        users: usersList,
+        totalUsers,
+        totalPages,
+        currentPage: pageInt,
+      },
+    });
+  });
 
+  //user list
+ export const userCount=asyncErrorResolver(async(req,res)=>{
+    const {  totalUsers } = await getAllUserServices(10, 1);
+    const message = totalUsers ? "User list" : "No users found";
+    res.json({status:STATUS.SUCCESS,message:message,totalUsers})
+ })
 //specific user
 export const singleUser=asyncErrorResolver(async(req,res)=>{
     const {id}=req.params
@@ -40,8 +62,4 @@ export const totalRevenue=asyncErrorResolver(async(req,res)=>{
     res.json({status:STATUS.SUCCESS,message:"total revenue ",total})
 })
 
-//user list
- export const userCount=asyncErrorResolver(async(req,res)=>{
-    const usersList=await getAllUserServices()
-    res.json({status:STATUS.SUCCESS,message:"user count",count:usersList.length})
- })
+

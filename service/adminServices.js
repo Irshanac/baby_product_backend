@@ -19,9 +19,13 @@ export const userBlockService = async (id) => {
 };
 
 //get all user
-export const getAllUserServices = async () => {
-  const usersList = await user.find({isAdmin:{$ne:true}})
-  return usersList
+export const getAllUserServices = async (limit, skip) => {
+  const usersList = await user
+    .find({ isAdmin: { $ne: true } })
+    .skip(skip)
+    .limit(limit);
+  const totalUsers = await user.countDocuments({ isAdmin: { $ne: true } });
+  return { usersList, totalUsers };
 };
 
 //specific user
